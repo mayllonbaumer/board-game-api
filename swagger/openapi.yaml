@@ -1,0 +1,345 @@
+openapi: 3.0.3
+info:
+  title: Board Game Catalog API
+  description: API para gerenciar um catálogo de jogos de tabuleiro e um histórico de partidas, incluindo informações sobre descrição, fotos, número de jogadores, avaliação, jogadores e pontuações.
+  version: 1.0.0
+servers:
+  - url: https://api.boardgamecatalog.com/v1
+    description: Servidor principal
+
+paths:
+  /games:
+    get:
+      summary: Listar todos os jogos de tabuleiro
+      responses:
+        '200':
+          description: Lista de jogos de tabuleiro
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+    post:
+      summary: Adicionar um novo jogo de tabuleiro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameInput'
+      responses:
+        '201':
+          description: Jogo adicionado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+  
+  /games/{gameId}:
+    get:
+      summary: Obter detalhes de um jogo específico
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalhes do jogo de tabuleiro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '404':
+          description: Jogo não encontrado
+    put:
+      summary: Atualizar um jogo de tabuleiro existente
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameInput'
+      responses:
+        '200':
+          description: Jogo atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '404':
+          description: Jogo não encontrado
+    delete:
+      summary: Excluir um jogo de tabuleiro
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Jogo excluído com sucesso
+        '404':
+          description: Jogo não encontrado
+
+  /players:
+    get:
+      summary: Listar todos os jogadores
+      responses:
+        '200':
+          description: Lista de jogadores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+    post:
+      summary: Adicionar um novo jogador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '201':
+          description: Jogador adicionado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+
+  /players/{playerId}:
+    get:
+      summary: Obter detalhes de um jogador específico
+      parameters:
+        - in: path
+          name: playerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalhes do jogador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Jogador não encontrado
+    put:
+      summary: Atualizar um jogador existente
+      parameters:
+        - in: path
+          name: playerId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '200':
+          description: Jogador atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Jogador não encontrado
+    delete:
+      summary: Excluir um jogador
+      parameters:
+        - in: path
+          name: playerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Jogador excluído com sucesso
+        '404':
+          description: Jogador não encontrado
+
+  /matches:
+    get:
+      summary: Listar todas as partidas
+      responses:
+        '200':
+          description: Lista de partidas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+    post:
+      summary: Registrar uma nova partida
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchInput'
+      responses:
+        '201':
+          description: Partida registrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+
+  /matches/{matchId}:
+    get:
+      summary: Obter detalhes de uma partida específica
+      parameters:
+        - in: path
+          name: matchId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalhes da partida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '404':
+          description: Partida não encontrada
+
+components:
+  schemas:
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único do jogo
+        title:
+          type: string
+          description: Nome do jogo de tabuleiro
+        description:
+          type: string
+          description: Descrição do jogo de tabuleiro
+        photoUrl:
+          type: string
+          description: URL da foto do jogo de tabuleiro
+        playersMin:
+          type: integer
+          description: Número mínimo de jogadores
+        playersMax:
+          type: integer
+          description: Número máximo de jogadores
+        rating:
+          type: number
+          format: float
+          description: Avaliação do jogo de tabuleiro
+        createdAt:
+          type: string
+          format: date-time
+          description: Data e hora de criação do registro
+
+    GameInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nome do jogo de tabuleiro
+        description:
+          type: string
+          description: Descrição do jogo de tabuleiro
+        photoUrl:
+          type: string
+          description: URL da foto do jogo de tabuleiro
+        playersMin:
+          type: integer
+          description: Número mínimo de jogadores
+        playersMax:
+          type: integer
+          description: Número máximo de jogadores
+        rating:
+          type: number
+          format: float
+          description: Avaliação do jogo de tabuleiro
+
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único do jogador
+        name:
+          type: string
+          description: Nome do jogador
+        createdAt:
+          type: string
+          format: date-time
+          description: Data e hora de criação do registro
+
+    PlayerInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nome do jogador
+
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único da partida
+        gameId:
+          type: string
+          description: ID do jogo de tabuleiro
+        players:
+          type: array
+          items:
+            type: object
+            properties:
+              playerId:
+                type: string
+                description: ID do jogador
+              score:
+                type: integer
+                description: Pontuação do jogador
+        playedAt:
+          type: string
+          format: date-time
+          description: Data e hora em que a partida foi jogada
+
+    MatchInput:
+      type: object
+      properties:
+        gameId:
+          type: string
+          description: ID do jogo de tabuleiro
+        players:
+          type: array
+          items:
+            type: object
+            properties:
+              playerId:
+                type: string
+                description: ID do jogador
+              score:
+                type: integer
+                description: Pontuação do jogador
+        playedAt:
+          type: string
+          format: date-time
+          description: Data e hora em que a partida foi jogada
