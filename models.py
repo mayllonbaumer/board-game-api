@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
+# Inicializa o objeto db do SQLAlchemy sem o app
 db = SQLAlchemy()
 
 class Game(db.Model):

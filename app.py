@@ -1,13 +1,18 @@
-from flask import Flask, request, jsonify, abort
-from models import db, Game, Player, Match
-from database import init_db
+import os
+from flask import Flask, request, jsonify
+from models import db, Game, Player, Match  # Importar os modelos e o objeto db
+from database import init_db  # Se usar init_db para criar as tabelas
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+
+# Configuração do banco de dados MySQL
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/{os.environ['DB_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Inicializa o SQLAlchemy com o app Flask
 db.init_app(app)
 
-# Inicializa o banco de dados na criação do contexto da aplicação
+# Inicializa o banco de dados (criação de tabelas) ao iniciar o contexto do app
 with app.app_context():
     init_db()
 
