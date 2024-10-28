@@ -1,0 +1,15 @@
+image:
+  repository: gcr.io/${PROJECT_ID}/board-game-api
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 8080
+
+env:
+  DB_USER: "${DB_USER}"
+  DB_PASSWORD: "${DB_PASSWORD}"
+  DB_URL: "${DB_URL}"
+  DB_PORT: "${DB_PORT}"
+  DB_NAME: "${DB_NAME}"

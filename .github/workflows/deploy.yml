@@ -1,0 +1,59 @@
+name: Deploy API to GKE
+
+on:
+  push:
+    branches:
+      - main  # Altere para o branch desejado
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Type the environment name that you want to deploy (dev, test ou prd)
+        required: false
+        default: development
+env:
+  environment: ${{github.event.inputs.environment || 'development'}}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{github.event.inputs.environment || 'development'}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name:  Set Google Cloud Credentials
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{secrets.SA_KEY}}
+
+      - name: Authenticate to Google Cloud
+        run: gcloud auth activate-service-account --key-file="${{ secrets.SA_KEY }}"
+
+      - name: Configure Docker to use the Google Cloud registry
+        run: gcloud auth configure-docker
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/${{ vars.PROJECT_ID }}/board-game-api:latest .
+          docker push gcr.io/${{ vars.PROJECT_ID }}/board-game-api:latest
+
+      - name: Get GKE credentials
+        run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_REGION }}
+
+      - name: Set up environment variables
+        run: |
+          echo "PROJECT_ID=${{ vars.PROJECT_ID }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
+
+      - name: Render Helm values file
+        run: |
+          envsubst < ./helm/my-api-chart/values-template.yaml > ./helm/my-api-chart/values.yaml
+
+      - name: Deploy to GKE using Helm
+        run: |
+          helm upgrade --install board-game-api ./helm/my-api-chart
