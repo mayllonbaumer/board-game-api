@@ -22,11 +22,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name:  Set Google Cloud Credentials
-        uses: google-github-actions/auth@v2
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
         with:
-          credentials_json: ${{secrets.SA_KEY}}
-
+          project_id: ${{ vars.PROJECT_ID }}
+          service_account_key: ${{ secrets.SA_KEY }}
+      
       - name: Authenticate to Google Cloud
         run: gcloud auth activate-service-account --key-file="${{ secrets.SA_KEY }}"
 
