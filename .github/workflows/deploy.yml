@@ -52,5 +52,6 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          REPO: gcr.io/${{ vars.PROJECT_ID }}/board-game-api
         run: |
           helm upgrade --install board-game-api ./helm/my-api-chart
