@@ -1,7 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: secret-reader
+  namespace: default  # Mude para o namespace onde sua aplicação está implantada
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
