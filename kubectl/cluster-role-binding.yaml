@@ -1,12 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: role-creator-binding
+  name: deployer-binding
 subjects:
 - kind: ServiceAccount
-  name: deploy-gke  # Nome da sua conta de serviço
-  namespace: default  # Namespace onde a conta de serviço está localizada
+  name: deploy-gke
+  namespace: default
 roleRef:
   kind: ClusterRole
-  name: role-creator
+  name: deployer
   apiGroup: rbac.authorization.k8s.io
