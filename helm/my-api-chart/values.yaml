@@ -1,5 +1,5 @@
 image:
-  repository: "${REPO}"
+  repository: gcr.io/${PROJECT_ID}/board-game-api
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -13,4 +13,4 @@ env:
   DB_URL: ""
   DB_PORT: ""
   DB_NAME: ""
-  REPO: ""
+  PROJECT_ID: ""

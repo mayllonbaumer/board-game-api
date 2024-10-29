@@ -46,14 +46,12 @@ jobs:
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_REGION }}
 
       - name: Deploy with Helm
-        image:
-          repository: gcr.io/${{ vars.PROJECT_ID }}/board-game-api 
         env: 
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_NAME: ${{ secrets.DB_NAME }}
-          REPO: gcr.io/${{ vars.PROJECT_ID }}/board-game-api
+          PROJECT_ID: ${{ vars.PROJECT_ID }}
         run: |
           helm upgrade --install board-game-api ./helm/my-api-chart
