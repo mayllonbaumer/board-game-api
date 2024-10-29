@@ -46,7 +46,9 @@ jobs:
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_REGION }}
 
       - name: Deploy with Helm
-        env:
+        image:
+          repository: gcr.io/${{ vars.PROJECT_ID }}/board-game-api 
+        env: 
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
