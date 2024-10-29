@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: secret-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: deploy-gke  # Nome da sua conta de serviço
+  namespace: default  # Namespace onde a conta de serviço está localizada
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
