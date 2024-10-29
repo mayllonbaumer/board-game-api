@@ -45,11 +45,6 @@ jobs:
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_REGION }}
 
-      - name: Apply ClusterRole and ClusterRoleBinding
-        run: |
-          kubectl apply -f ./kubectl/cluster-role.yaml
-          kubectl apply -f ./kubectl/cluster-role-binding.yaml
-
       - name: Deploy with Helm
         env:
           DB_USER: ${{ secrets.DB_USER }}
