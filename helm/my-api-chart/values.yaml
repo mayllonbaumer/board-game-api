@@ -1,5 +1,5 @@
 image:
-  repository: gcr.io/${PROJECT_ID}/board-game-api
+  repository: "gcr.io/${PROJECT_ID}/board-game-api"
   pullPolicy: IfNotPresent
   tag: "latest"
 
