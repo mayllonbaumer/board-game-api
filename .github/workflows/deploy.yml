@@ -30,6 +30,10 @@ jobs:
       - name: Configure Google Cloud credentials
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+
       - name: Configure Docker to use the Google Cloud registry
         run: gcloud auth configure-docker
 
