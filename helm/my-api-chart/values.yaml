@@ -1,4 +1,5 @@
 image:
+  repository: "${REPO}"
   pullPolicy: IfNotPresent
   tag: "latest"
 
