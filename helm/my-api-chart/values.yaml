@@ -13,4 +13,5 @@ env:
   DB_URL: ""
   DB_PORT: ""
   DB_NAME: ""
+  DB_HOST: ""
   PROJECT_ID: ""

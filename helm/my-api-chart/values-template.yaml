@@ -13,5 +13,5 @@ env:
   DB_URL: "${DB_URL}"
   DB_PORT: "${DB_PORT}"
   DB_NAME: "${DB_NAME}"
-  REPO: "${REPO}"
+  DB_HOST: "${DB_HOST}"
   PROJECT_ID: "${PROJECT_ID}"

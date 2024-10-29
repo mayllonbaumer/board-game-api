@@ -52,6 +52,7 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          DB_HOST: ${{ secrets.DB_HOST }}
           PROJECT_ID: ${{ vars.PROJECT_ID }}
         run: |
           helm upgrade --install board-game-api ./helm/my-api-chart
